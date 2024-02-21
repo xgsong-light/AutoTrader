@@ -1,2 +1,2 @@
 # AutoTrader
-automatic trading system
+Automatic Trading System
