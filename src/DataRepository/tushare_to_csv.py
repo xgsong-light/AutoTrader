@@ -1,11 +1,10 @@
 import tushare as ts
 import pandas as pd
-import os
-import datetime
+from DataRepository.file_manager import FileManager
 
 class TushareToCSV:
-    def __init__(self, token):
-        ts.set_token(token)
+    def __init__(self):
+        ts.set_token('ebb9dae75ef5e4ce299b5ff4605d4ad6e63425b51271eed4828ed08c')
         self.pro = ts.pro_api()
 
     def fetch_data(self, ts_code, start_date, end_date):
@@ -41,13 +40,8 @@ class TushareToCSV:
         return df_resampled
 
     def save_to_csv(self, df, ts_code, period_type):
-        # 确保data子目录存在
-        data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
-        if not os.path.exists(data_dir):
-            os.makedirs(data_dir)
-        
         # 文件名使用股票代码和周期类型
-        filename = os.path.join(data_dir, f"{ts_code}_{period_type}.csv")
+        filename = FileManager.filename(ts_code, period_type)
         
         # 保存为CSV文件
         df.to_csv(filename, index=False)
@@ -70,17 +64,17 @@ class TushareToCSV:
         self.save_to_csv(df_monthly, ts_code, 'monthly')
 
 # 使用示例
-if __name__ == '__main__':
-    tushare_token = 'ebb9dae75ef5e4ce299b5ff4605d4ad6e63425b51271eed4828ed08c'
-    tushare_to_csv = TushareToCSV(tushare_token)
+# if __name__ == '__main__':
+#     tushare_token = 'ebb9dae75ef5e4ce299b5ff4605d4ad6e63425b51271eed4828ed08c'
+#     tushare_to_csv = TushareToCSV(tushare_token)
     
-    # 设置股票代码、开始结束日期
-    start_date = '20100101'
-    end_date = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%Y%m%d')
+#     # 设置股票代码、开始结束日期
+#     start_date = '20100101'
+#     end_date = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%Y%m%d')
     
-    # 000858.SZ = 五粮液，000651.SZ = 格力电器，000333.SZ = 美的集团，
-    # 600519.SH = 贵州茅台，600036.SH = 招商银行
-    stock_codes = ['000858.SZ', '000651.SZ', '000333.SZ', '600036.SH', '600519.SH']
+#     # 000858.SZ = 五粮液，000651.SZ = 格力电器，000333.SZ = 美的集团，
+#     # 600519.SH = 贵州茅台，600036.SH = 招商银行
+#     stock_codes = ['000858.SZ', '000651.SZ', '000333.SZ', '600036.SH', '600519.SH']
 
-    for code in stock_codes:
-        tushare_to_csv.run(code, start_date, end_date)
+#     for code in stock_codes:
+#         tushare_to_csv.run(code, start_date, end_date)
