@@ -3,9 +3,9 @@
 import backtrader as bt
 
 analyzers_config = {
-    'sharpe_ratio': {
-        'analyzer': bt.analyzers.SharpeRatio,
-        'params': {'riskfreerate': 0.01},
+    'returns': {
+        'analyzer': bt.analyzers.Returns,
+        'params': {},
         'enabled': True
     },
     'drawdown': {
@@ -13,13 +13,23 @@ analyzers_config = {
         'params': {},
         'enabled': True
     },
-    'returns': {
-        'analyzer': bt.analyzers.Returns,
+    'sharpe_ratio': {
+        'analyzer': bt.analyzers.SharpeRatio,
+        'params': {'riskfreerate': 0.01},
+        'enabled': True
+    },
+    'transactions': {
+        'analyzer': bt.analyzers.Transactions,
         'params': {},
         'enabled': True
     },
     'trade_analyzer': {
         'analyzer': bt.analyzers.TradeAnalyzer,
+        'params': {},
+        'enabled': True
+    },
+    'pyfolio': {
+        'analyzer': bt.analyzers.PyFolio,
         'params': {},
         'enabled': True
     }
