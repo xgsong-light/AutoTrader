@@ -1,5 +1,6 @@
 import os
 import csv
+import matplotlib.pyplot as plt
 from BacktestEngine.backtest_config import BacktestConfig
 
 class ResultPresenter:
@@ -8,20 +9,8 @@ class ResultPresenter:
         self.result = result
 
     def present(self):
-        self.custom_analysis_result()
-
-    def custom_analysis_result(self):
-        print("Backtest Results Analysis")
-        print("========================")
-        
-        # self.present_backtest_info()
-        # self.present_returns()
-        # self.present_drawdown()
-        # self.present_sharpe_ratio()
-        # self.present_win_rate()
-        # self.present_transactions()
-
-        self.save_to_csv()
+        self.present_analysis_result_to_csv()
+        # self.present_analysis_result_in_chart()
 
     def present_backtest_info(self):
         print("\nBacktest Information:")
@@ -130,7 +119,7 @@ class ResultPresenter:
         else:
             print(analysis)
 
-    def save_to_csv(self):
+    def present_analysis_result_to_csv(self):
         # 确保结果目录存在
         result_dir = './ResultPresenter/result'
         os.makedirs(result_dir, exist_ok=True)
@@ -144,7 +133,7 @@ class ResultPresenter:
         with open(filepath, 'w', newline='') as file:
             writer = csv.writer(file)
             # 写入标题头
-            writer.writerow(['Metric', 'Value'])
+            writer.writerow(['Backtest Results Analysis'])
 
             # 写入分析结果
             writer.writerow(['TS Code', self.config.ts_code])
@@ -172,3 +161,28 @@ class ResultPresenter:
         for transaction in transactions_data:
             writer.writerow([transaction['Date'], transaction['Amount'], transaction['Price'], transaction['Sid'], transaction['Symbol'], transaction['Value']])
         writer.writerow([])  # 空行分隔不同的分析
+
+    def present_analysis_result_in_chart(self):
+        # 绘图设置 (可以自定义这些设置)
+        plt.figure(figsize=(12, 6))
+        
+        # 绘制资产价值曲线
+        plt.plot(self.result.analyzers.getbyname('time_return').get_analysis())
+        
+        # 添加标题和标签
+        plt.title('Strategy Performance')
+        plt.xlabel('Time')
+        plt.ylabel('Portfolio Value')
+        plt.grid(True)
+        
+        # 保存图表
+        result_dir = './ResultPresenter/result'
+        os.makedirs(result_dir, exist_ok=True)
+
+        # 构建文件名
+        strategy_name = self.config.strategy.__name__
+        filename = f'{self.config.ts_code}_{strategy_name}_{self.config.period_type}_time_return.png'
+        filepath = os.path.join(result_dir, filename)
+        plt.savefig(filename)
+        plt.show()  # 如果你希望在脚本运行时显示图表，可以取消注释这一行
+        pass

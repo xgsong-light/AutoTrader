@@ -9,9 +9,9 @@ from BacktestEngine.backtest_config import BacktestConfig
 # 主程序
 if __name__ == '__main__':
     # 配置初始条件
-    backtest_config = BacktestConfig('000858.SZ', 'weekly', 10000.0, MovingAverageStrategy, analyzers_config)
+    backtest_config = BacktestConfig('000858.SZ', 'monthly', 10000.0, MovingAverageStrategy, analyzers_config)
 
-    # 实例化回测引擎，并设置初始资金
+    # 实例化回测引擎
     backtest_engine = BacktestEngine(backtest_config)
 
     # 运行回测
@@ -20,3 +20,5 @@ if __name__ == '__main__':
     # 实例化结果输出模块，并展示结果
     presenter = ResultPresenter(backtest_config, backtest_results[0])
     presenter.present()
+
+    backtest_engine.plot()

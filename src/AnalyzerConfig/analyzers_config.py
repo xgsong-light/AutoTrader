@@ -32,6 +32,11 @@ analyzers_config = {
         'analyzer': bt.analyzers.PyFolio,
         'params': {},
         'enabled': True
-    }
+    },
+    'time_return': {
+        'analyzer': bt.analyzers.TimeReturn,
+        'params': {},
+        'enabled': True
+    },
     # 其他分析器的配置可以在这里添加
 }
